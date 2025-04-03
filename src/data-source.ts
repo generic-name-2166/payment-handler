@@ -1,8 +1,9 @@
-import { Sequelize } from "sequelize";
+import { DatabaseError, Sequelize } from "sequelize";
 import { SequelizeStorage, Umzug } from "umzug";
+import { down, up } from "./migrations/user.migration.ts";
 
 export const sequelize = new Sequelize(
-  "postgresql://postgres:postgres@localhost:5432/payment",
+  "postgresql://postgres:postgres@localhost:5432",
   {
     define: {
       // Avoid autopluraization of table names
@@ -13,10 +14,22 @@ export const sequelize = new Sequelize(
   },
 );
 
-const migrator = new Umzug({
-  migrations: {
-    glob: ["migrations/*.ts", { cwd: import.meta.dirname }],
-  },
+try {
+  await sequelize.getQueryInterface().createDatabase("payment");
+} catch (err) {
+  if (!(err instanceof DatabaseError)) {
+    throw err;
+  }
+}
+
+export const migrator: Umzug<Sequelize> = new Umzug<Sequelize>({
+  migrations: [
+    {
+      name: "01-user",
+      up,
+      down,
+    },
+  ],
   context: sequelize,
   storage: new SequelizeStorage({
     sequelize,
@@ -25,25 +38,3 @@ const migrator = new Umzug({
 });
 
 export type Migration = typeof migrator._types.migration;
-
-/* 
-import { User } from "./models/user.entity.ts";
-
-const appDataSource = new DataSource({
-  type: "postgres",
-  host: process.env.POSTGRES_HOST ?? "localhost",
-  port: 5432,
-  username: "postgres",
-  password: "postgres",
-  database: "blogs",
-  synchronize: true,
-  logging: false,
-  entities: [User],
-  subscribers: [],
-  migrations: [],
-});
-
-await appDataSource.initialize();
-
-export const userRepository = appDataSource.getRepository(User);
- */

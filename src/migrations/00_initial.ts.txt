@@ -1,5 +1,0 @@
-import type { Migration } from "../data-source.ts";
-
-export const up: Migration = async ({ context }) => {
-  await context.getQueryInterface().createDatabase("payment");
-};

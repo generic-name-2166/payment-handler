@@ -1,6 +1,6 @@
 import express, { type Request, type Response, type Router } from "express";
 import { matchedData, validationResult } from "express-validator";
-import type { Service } from "../services/service.ts";
+import { PaymentResult, type Service } from "../services/service.ts";
 import validate from "../middleware/payment.validate.ts";
 
 async function postPayment(
@@ -21,10 +21,18 @@ async function postPayment(
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const amount: number = data.amount;
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-  (await service.processPayment(id, amount))
-    ? res.sendStatus(201)
-    : res.sendStatus(402);
+  const result = await service.processPayment(id, amount);
+  switch (result) {
+    case PaymentResult.NotFound:
+      res.sendStatus(404);
+      return;
+    case PaymentResult.Success:
+      res.sendStatus(201);
+      return;
+    case PaymentResult.Failure:
+      res.sendStatus(402);
+      return;
+  }
 }
 
 export default function payment(service: Service): Router {

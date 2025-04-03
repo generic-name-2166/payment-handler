@@ -1,10 +1,21 @@
-import { DataTypes } from "sequelize";
+import { DataTypes, type ModelAttributes } from "sequelize";
+
 import type { Migration } from "../data-source.ts";
-import { User, userAttrs } from "../models/user.ts";
+
+export const userAttrs: ModelAttributes = {
+  id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    primaryKey: true,
+  },
+  balance: {
+    type: DataTypes.BIGINT,
+    allowNull: false,
+  },
+};
 
 export const up: Migration = async ({ context }) => {
   await context.getQueryInterface().createTable("user", userAttrs);
-  await User.create({ id: 0, balance: 10000 });
 };
 
 export const down: Migration = async ({ context }) => {

@@ -1,17 +1,7 @@
-import { DataTypes, type ModelAttributes } from "sequelize";
-
+import { Model } from "sequelize";
 import { sequelize } from "../data-source.ts";
+import { userAttrs } from "../migrations/user.migration.ts";
 
-export const userAttrs: ModelAttributes = {
-  id: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    primaryKey: true,
-  },
-  balance: {
-    type: DataTypes.BIGINT,
-    allowNull: false,
-  },
-};
+export class User extends Model {}
 
-export const User = sequelize.define("user", userAttrs);
+User.init(userAttrs, { sequelize, modelName: "User" });
