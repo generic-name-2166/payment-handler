@@ -1,26 +1,7 @@
 import express, { type Request, type Response, type Router } from "express";
-import {
-  checkSchema,
-  matchedData,
-  validationResult,
-  type Schema,
-} from "express-validator";
+import { matchedData, validationResult } from "express-validator";
 import type { Service } from "../services/service.ts";
-
-const postSchema: Schema = {
-  id: {
-    isInt: true,
-    toInt: true,
-    in: "body",
-    optional: false,
-  },
-  amount: {
-    isInt: true,
-    toInt: true,
-    in: "body",
-    optional: false,
-  },
-};
+import validate from "../middleware/payment.validate.ts";
 
 async function postPayment(
   req: Request,
@@ -51,11 +32,7 @@ export default function payment(service: Service): Router {
 
   const post = (req: Request, res: Response) => postPayment(req, res, service);
 
-  router.post(
-    "/",
-    // checkSchema(postSchema),
-    post,
-  );
+  router.post("/", validate, post);
 
   return router;
 }
