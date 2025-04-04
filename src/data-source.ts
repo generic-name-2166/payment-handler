@@ -2,6 +2,18 @@ import { DatabaseError, Sequelize } from "sequelize";
 import { SequelizeStorage, Umzug } from "umzug";
 import { down, up } from "./migrations/user.migration.ts";
 
+const sequelize_ = new Sequelize(
+  "postgresql://postgres:postgres@localhost:5432",
+);
+
+try {
+  await sequelize_.getQueryInterface().createDatabase("payment");
+} catch (err) {
+  if (!(err instanceof DatabaseError)) {
+    throw err;
+  }
+}
+
 export const sequelize = new Sequelize(
   "postgresql://postgres:postgres@localhost:5432/payment",
   {
@@ -13,14 +25,6 @@ export const sequelize = new Sequelize(
     },
   },
 );
-
-try {
-  await sequelize.getQueryInterface().createDatabase("payment");
-} catch (err) {
-  if (!(err instanceof DatabaseError)) {
-    throw err;
-  }
-}
 
 export const migrator: Umzug<Sequelize> = new Umzug<Sequelize>({
   migrations: [

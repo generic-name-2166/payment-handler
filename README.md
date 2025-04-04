@@ -1,8 +1,8 @@
 # payment-handler
 
-A simple webserver with 1 handle to handle payments. 
+A simple webserver with 1 handle to handle payments.
 
-On startup creates database `payment` with table `user` and 1 user with id `0`. 
+On startup creates database `payment` with table `user` and 1 user with id `0`.
 
 Make a payment with `/payment` route POST request
 
