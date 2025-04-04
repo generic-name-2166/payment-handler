@@ -12,7 +12,7 @@ app.use(helmet());
 export default function initialize(service: Service): Application {
   const router = express.Router();
   router.use("/payment", payment(service));
-  app.use("/api", router);
+  app.use("/", router);
 
   return app;
 }
