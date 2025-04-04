@@ -18,8 +18,8 @@ async function postPayment(
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const id: number = data.id;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const amount: number = data.amount;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  const amount = BigInt(data.amount);
 
   const result = await service.processPayment(id, amount);
   switch (result) {

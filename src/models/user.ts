@@ -4,4 +4,4 @@ import { userAttrs } from "../migrations/user.migration.ts";
 
 export class User extends Model {}
 
-User.init(userAttrs, { sequelize, modelName: "User" });
+User.init(userAttrs, { sequelize, modelName: "user" });
