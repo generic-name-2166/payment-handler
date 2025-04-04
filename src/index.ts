@@ -6,6 +6,7 @@ const service: Service = new RealService();
 const port = 3000;
 
 const app = initialize(service);
+await migrator.down();
 await migrator.up();
 
 const server = app.listen(port, () => {

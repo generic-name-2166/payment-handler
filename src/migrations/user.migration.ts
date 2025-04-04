@@ -15,7 +15,9 @@ export const userAttrs: ModelAttributes = {
 };
 
 export const up: Migration = async ({ context }) => {
-  await context.getQueryInterface().createTable("user", userAttrs);
+  const query = context.getQueryInterface();
+  await query.createTable("user", userAttrs);
+  await query.bulkInsert("user", [{ id: 0, balance: 10_000 }]);
 };
 
 export const down: Migration = async ({ context }) => {

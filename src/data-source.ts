@@ -3,7 +3,7 @@ import { SequelizeStorage, Umzug } from "umzug";
 import { down, up } from "./migrations/user.migration.ts";
 
 export const sequelize = new Sequelize(
-  "postgresql://postgres:postgres@localhost:5432",
+  "postgresql://postgres:postgres@localhost:5432/payment",
   {
     define: {
       // Avoid autopluraization of table names
